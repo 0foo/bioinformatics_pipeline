@@ -1,0 +1,111 @@
+// nick@precision-5680-2023 ~/Documents/Projects-School/Atallah-Lab/genome-analysis  : datasets summary genome taxon 7215 \
+//   --reference \
+//   --assembly-level chromosome \
+//   | jq '.reports[] | select(.accession | startswith("GCF_")) | {
+//       Accession: .accession, 
+//       Species: .organism.organism_name
+//     }'
+
+
+
+
+{
+  "Accession": "GCF_009650485.2",
+  "Species": "Drosophila albomicans"
+}
+{
+  "Accession": "GCF_017639315.1",
+  "Species": "Drosophila ananassae"
+}
+{
+  "Accession": "GCF_025231255.1",
+  "Species": "Drosophila biarmipes"
+}
+{
+  "Accession": "GCF_030179905.1",
+  "Species": "Drosophila bipectinata"
+}
+{
+  "Accession": "GCF_011750605.1",
+  "Species": "Drosophila busckii"
+}
+{
+  "Accession": "GCF_025200985.1",
+  "Species": "Drosophila gunungcola"
+}
+{
+  "Accession": "GCF_004354385.1",
+  "Species": "Drosophila innubila"
+}
+{
+  "Accession": "GCF_030179895.1",
+  "Species": "Drosophila kikkawai"
+}
+{
+  "Accession": "GCF_004382145.1",
+  "Species": "Drosophila mauritiana"
+}
+{
+  "Accession": "GCF_000001215.4",
+  "Species": "Drosophila melanogaster"
+}
+{
+  "Accession": "GCF_003369915.1",
+  "Species": "Drosophila miranda"
+}
+{
+  "Accession": "GCF_023558535.2",
+  "Species": "Drosophila nasuta"
+}
+{
+  "Accession": "GCF_009870125.1",
+  "Species": "Drosophila pseudoobscura"
+}
+{
+  "Accession": "GCF_016746245.2",
+  "Species": "Drosophila santomea"
+}
+{
+  "Accession": "GCF_004382195.2",
+  "Species": "Drosophila sechellia"
+}
+{
+  "Accession": "GCF_016746395.2",
+  "Species": "Drosophila simulans"
+}
+{
+  "Accession": "GCF_008121235.1",
+  "Species": "Drosophila subobscura"
+}
+{
+  "Accession": "GCF_014743375.2",
+  "Species": "Drosophila subpulchrella"
+}
+{
+  "Accession": "GCF_023558435.1",
+  "Species": "Drosophila sulfurigaster albostrigata"
+}
+{
+  "Accession": "GCF_043229965.1",
+  "Species": "Drosophila suzukii"
+}
+{
+  "Accession": "GCF_030179915.1",
+  "Species": "Drosophila takahashii"
+}
+{
+  "Accession": "GCF_016746235.2",
+  "Species": "Drosophila teissieri"
+}
+{
+  "Accession": "GCF_030788295.1",
+  "Species": "Drosophila virilis"
+}
+{
+  "Accession": "GCF_018902025.1",
+  "Species": "Drosophila willistoni"
+}
+{
+  "Accession": "GCF_016746365.2",
+  "Species": "Drosophila yakuba"
+}

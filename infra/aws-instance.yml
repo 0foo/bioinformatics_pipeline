@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Genomics Environment Host Configuration - Base Instance Resource Stack'
+
+Parameters:
+  KeyName:
+    Description: 'Name of an existing EC2 KeyPair to enable SSH access'
+    Type: 'AWS::EC2::KeyPair::KeyName'
+    ConstraintDescription: 'Must be the name of an existing EC2 KeyPair.'
+
+  VpcId:
+    Description: 'Select the target VPC'
+    Type: 'AWS::EC2::VPC::Id'
+
+  SubnetId:
+    Description: 'Select a subnet within the chosen VPC (Must have internet access routes)'
+    Type: 'AWS::EC2::Subnet::Id'
+
+  SSHLocation:
+    Description: 'The IP address range that can SSH into the EC2 instance'
+    Type: String
+    Default: '0.0.0.0/0'
+    AllowedPattern: '(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/(\d{1,2})'
+    ConstraintDescription: 'Must be a valid IP CIDR range of the form x.x.x.x/x.'
+
+Mappings:
+  RegionMap:
+    us-east-1:
+      AMI: 'ami-0a0e5d9c7acc336f1'
+    us-east-2:
+      AMI: 'ami-05fb0b8c1424f266b'
+    us-west-1:
+      AMI: 'ami-038b9e3e28aa2fceb'
+    us-west-2:
+      AMI: 'ami-05d38da78ce859165'
+
+Resources:
+  PipelineSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Allow inbound SSH traffic and all outbound traffic'
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref SSHLocation
+
+  PipelineInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: 'c6id.2xlarge'
+      ImageId: !FindInMap [RegionMap, !Ref 'AWS::Region', AMI]
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref PipelineSecurityGroup
+      SubnetId: !Ref SubnetId
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 40
+            VolumeType: gp3
+            Iops: 3000
+            Throughput: 125
+
+Outputs:
+  InstancePublicIp:
+    Description: 'Public IP of the genomics execution workspace host'
+    Value: !GetAtt PipelineInstance.PublicIp
