@@ -2,7 +2,7 @@
 set -e
 
 # Export full environment path first so binary tools (like 'datasets') can be found
-export PATH="/workspace/drivers/EarlGrey:/workspace/drivers/RepeatMasker:/workspace/drivers/RepeatMasker/Libraries/FamDB:/workspace/drivers/bin:/workspace/drivers/rmblast/bin:$PATH"
+export PATH="/workspace/drivers/RepeatModeler:/workspace/drivers/EarlGrey:/workspace/drivers/RepeatMasker:/workspace/drivers/RepeatMasker/Libraries/FamDB:/workspace/drivers/bin:/workspace/drivers/rmblast/bin:$PATH"
 
 echo ">>> Loading configuration..."
 GENOME_ID=$(python3 -c 'import json; print(json.load(open("reference-genomes.json"))["genome_id"])')
