@@ -28,11 +28,13 @@ RUN wget -qO /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-la
 ENV PATH="/opt/conda/bin:/opt/bin:$PATH"
 
 # 5. Install the entire bioinformatics stack via Conda
-# This automatically installs EarlGrey, RepeatMasker, RepeatModeler, RECON, RepeatScout, TRF, BLAST, BEDtools, Snakemake, and all Perl/Python dependencies.
+# (Snakemake removed; Terms of Service explicitly accepted for automated builds)
 RUN conda config --add channels defaults \
     && conda config --add channels bioconda \
     && conda config --add channels conda-forge \
-    && conda install -y earlgrey repeatmodeler=2.0.7 snakemake \
+    && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
+    && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
+    && conda install -y earlgrey repeatmodeler=2.0.7 \
     && conda clean -a -y
 
 CMD ["/bin/bash"]
