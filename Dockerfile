@@ -27,12 +27,9 @@ RUN wget -qO /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases
 # 4. Configure paths so Conda/Mamba and NCBI tools are globally available
 ENV PATH="/opt/conda/bin:/opt/bin:$PATH"
 
-# 5. Configure channels, accept ToS, and install the stack using Mamba
-RUN conda config --add channels defaults \
-    && conda config --add channels bioconda \
+# 5. Configure channels (open-source only) and install the stack using Mamba
+RUN conda config --add channels bioconda \
     && conda config --add channels conda-forge \
-    && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
-    && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
     && mamba install -y earlgrey repeatmodeler=2.0.7 \
     && mamba clean -a -y
 
