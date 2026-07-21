@@ -2,7 +2,7 @@ FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# 1. Install basic system utilities (compilers and git are no longer needed)
+# 1. Install basic system utilities
 RUN apt-get update && apt-get install -y --no-install-recommends \
     jq \
     unzip \
@@ -19,22 +19,21 @@ RUN mkdir -p /opt/bin \
     && curl -sS -L -o /opt/bin/dataformat https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/v2/linux-amd64/dataformat \
     && chmod +x /opt/bin/datasets /opt/bin/dataformat
 
-# 3. Install Miniconda
-RUN wget -qO /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
-    && bash /tmp/miniconda.sh -b -p /opt/conda \
-    && rm /tmp/miniconda.sh
+# 3. Install Miniforge (includes Mamba for lightning-fast dependency solving)
+RUN wget -qO /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh \
+    && bash /tmp/miniforge.sh -b -p /opt/conda \
+    && rm /tmp/miniforge.sh
 
-# 4. Configure paths so Conda and NCBI tools are globally available
+# 4. Configure paths so Conda/Mamba and NCBI tools are globally available
 ENV PATH="/opt/conda/bin:/opt/bin:$PATH"
 
-# 5. Install the entire bioinformatics stack via Conda
-# (Snakemake removed; Terms of Service explicitly accepted for automated builds)
+# 5. Configure channels, accept ToS, and install the stack using Mamba
 RUN conda config --add channels defaults \
     && conda config --add channels bioconda \
     && conda config --add channels conda-forge \
     && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
     && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
-    && conda install -y earlgrey repeatmodeler=2.0.7 \
-    && conda clean -a -y
+    && mamba install -y earlgrey repeatmodeler=2.0.7 \
+    && mamba clean -a -y
 
 CMD ["/bin/bash"]
