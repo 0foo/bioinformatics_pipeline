@@ -24,13 +24,13 @@ RUN wget -qO /tmp/miniforge.sh https://github.com/conda-forge/miniforge/releases
     && bash /tmp/miniforge.sh -b -p /opt/conda \
     && rm /tmp/miniforge.sh
 
-# 4. Configure paths so Conda/Mamba and NCBI tools are globally available
-ENV PATH="/opt/conda/bin:/opt/bin:$PATH"
+# 4. Configure paths so the new Conda environment and NCBI tools are globally available
+ENV PATH="/opt/conda/envs/bioenv/bin:/opt/conda/bin:/opt/bin:$PATH"
 
-# 5. Configure channels (open-source only) and install the stack using Mamba
+# 5. Configure channels and create a dedicated environment with Python 3.11
 RUN conda config --add channels bioconda \
     && conda config --add channels conda-forge \
-    && mamba install -y earlgrey repeatmodeler=2.0.7 \
+    && mamba create -n bioenv -y python=3.11 earlgrey repeatmodeler=2.0.7 \
     && mamba clean -a -y
 
 CMD ["/bin/bash"]
