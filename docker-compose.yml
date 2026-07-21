@@ -6,9 +6,6 @@ services:
     container_name: genome-analysis
     restart: unless-stopped
     environment:
-      - SCRIPT_DIR=/workspace/drivers/EarlGrey/scripts
-      - PATH=/workspace/drivers/bin:/workspace/drivers/EarlGrey:/workspace/drivers/RepeatMasker:/workspace/drivers/RepeatModeler:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      - PERL5LIB=/workspace/drivers/RepeatMasker:/workspace/drivers/RepeatModeler
       - XDG_CACHE_HOME=/workspace/.cache
     volumes:
       - /workspace:/workspace
