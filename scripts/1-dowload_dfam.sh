@@ -18,7 +18,7 @@ download_and_verify() {
     local dest_ext="$H5_EXTRACT_DIR/${filename}"
 
     if [ -f "$dest_ext" ]; then
-        echo "Verified: $filename exists."
+        echo "Verified: $filename already extracted."
     else
         echo "Downloading $filename..."
         curl -Lfv "$url" -o "$dest_gz"
@@ -26,7 +26,6 @@ download_and_verify() {
         gunzip -c "$dest_gz" > "$dest_ext"
     fi
 }
-
 # Core + Curated + Diptera Partition
 FILES=(
     "dfam40.0.h5" 
