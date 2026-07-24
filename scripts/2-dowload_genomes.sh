@@ -21,8 +21,11 @@ mkdir -p "$CATALOG_DIR"
 CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.tsv"
 
 
+CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.json"
+
 echo ">>> Fetching available NCBI genome assembly summary for Drosophila melanogaster..."
-datasets summary genome taxon "Drosophila melanogaster" --as-json-lines | dataformat tsv genome --fields accession,org-name,assminfo-release-date,assminfo-level > "$CATALOG_FILE"
+datasets summary genome taxon "Drosophila melanogaster" --format json > "$CATALOG_FILE"
+
 
 echo ">>> Catalog saved to: $CATALOG_FILE"
 echo "=========================================="
