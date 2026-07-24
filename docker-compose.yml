@@ -8,7 +8,7 @@ services:
     environment:
       - XDG_CACHE_HOME=/workspace/.cache
     volumes:
-      - /workspace:/workspace
-    working_dir: /workspace/bioinformatics_pipeline
+      - /home/nick/Documents/Projects-School/Atallah-Lab/genome-analysis-workspace:/workspace
+    working_dir: /workspace
     stdin_open: true
     tty: true
