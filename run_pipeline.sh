@@ -39,6 +39,7 @@ echo ">>> Executing EarlGrey..."
 earlGrey -g "$GENOME_FILE" \
      -s "$GENOME_ID" \
      -r "$SEARCH_TERM" \
+     -D "/workspace/dfam_cache/FamDB_Data_extracted" \
      -o "$OUT_DIR" \
      -t 7
 
