@@ -50,6 +50,7 @@ for i in "${!GENOME_IDS[@]}"; do
     earlGrey -g "$GENOME_FILE" \
          -s "$GENOME_ID" \
          -r "$SEARCH_TERM" \
+         -i "$FAMDB_DATA_DIR" \
          -o "$OUT_DIR" \
          -t 4
 
