@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
-CACHE_DIR="/workspace/src_cache"
+CACHE_DIR="/workspace/dfam_cache"
 mkdir -p "$CACHE_DIR"
 
 H5_CACHE_DIR="$CACHE_DIR/FamDB_Data"
