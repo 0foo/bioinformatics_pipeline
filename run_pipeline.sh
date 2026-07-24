@@ -8,7 +8,7 @@ REPO_DIR="$WORKSPACE_DIR/bioinformatics_pipeline"
 REF_GENOMES_FILE="$REPO_DIR/reference-genomes.json"
 GENOME_ID=$(jq -r '.genome_id' "$REF_GENOMES_FILE")
 SEARCH_TERM=$(jq -r '.repeat_search_term' "$REF_GENOMES_FILE")
-DATA_DIR="$WORKSPACE_DIR/data/$GENOME_ID"
+DATA_DIR="$WORKSPACE_DIR/genomes/$GENOME_ID"
 OUT_DIR="$WORKSPACE_DIR/analysis/$GENOME_ID/earlgray_out"
 GENOME_FILE="$DATA_DIR/${GENOME_ID}_genomic.fna"
 
@@ -40,7 +40,6 @@ echo ">>> Executing EarlGrey..."
 earlGrey -g "$GENOME_FILE" \
      -s "$GENOME_ID" \
      -r "$SEARCH_TERM" \
-     -D "/workspace/dfam_cache/FamDB_Data_extracted" \
      -o "$OUT_DIR" \
      -t 4
 
