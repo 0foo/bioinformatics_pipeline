@@ -39,11 +39,10 @@ FILES=(
 for file in "${FILES[@]}"; do
     download_and_verify "$file"
     
-    # Create symlink from cache extraction directory to the required target location
-    if [ ! -e "$TARGET_DIR/$file" ]; then
-        ln -s "$H5_EXTRACT_DIR/$file" "$TARGET_DIR/$file"
-        echo "Created symlink for $file"
-    fi
+    # Force overwrite or create symlink from cache extraction directory to the target location
+    rm -f "$TARGET_DIR/$file"
+    ln -s "$H5_EXTRACT_DIR/$file" "$TARGET_DIR/$file"
+    echo "Created/updated symlink for $file"
 done
 
 touch "$TARGET_DIR/.earlgrey.config.complete"
