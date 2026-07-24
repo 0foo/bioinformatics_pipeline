@@ -4,7 +4,8 @@ set -e
 
 WORKSPACE_DIR="/workspace"
 GENOMES_DIR="$WORKSPACE_DIR/genomes"
-mkdir -p "$GENOMES_DIR"
+CATALOG_DIR="$GENOMES_DIR/catalog"
+mkdir -p "$CATALOG_DIR"
 
 # Define your list of target genomes directly in this array
 GENOME_IDS=(
@@ -15,20 +16,11 @@ echo "=========================================="
 echo "    GENOME DOWNLOAD & CATALOG SCRIPT      "
 echo "=========================================="
 
-# 1. Fetch available genomes
-CATALOG_DIR="$GENOMES_DIR/catalog"
-mkdir -p "$CATALOG_DIR"
-CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.tsv"
-
-
+# 1. Fetch available genomes catalog as JSON
 CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.json"
-
-CATALOG_FILE="$GENOMES_DIR/catalog/drosophila_melanogaster_available_genomes.json"
 
 echo ">>> Fetching available NCBI genome assembly summary for Drosophila melanogaster..."
 datasets summary genome taxon "Drosophila melanogaster" > "$CATALOG_FILE"
-
-
 
 echo ">>> Catalog saved to: $CATALOG_FILE"
 echo "=========================================="
