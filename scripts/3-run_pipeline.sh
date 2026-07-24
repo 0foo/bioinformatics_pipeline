@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 export PATH="/opt/conda/envs/bioenv/bin:/opt/conda/bin:/opt/bin:$PATH"
+export FAMDB_DATA_DIR="/workspace/dfam_cache/FamDB_Data_extracted"
 
 # Define root and workspace variables
 WORKSPACE_DIR="/workspace"
