@@ -45,5 +45,9 @@ for file in "${FILES[@]}"; do
     echo "Created/updated symlink for $file"
 done
 
+TARGET_DIR="/opt/conda/envs/bioenv/share/RepeatMasker/Libraries/famdb"
+mkdir -p "$TARGET_DIR"
+ln -sf /workspace/dfam_cache/FamDB_Data_extracted/*.h5 "$TARGET_DIR/"
+
 touch "$TARGET_DIR/.earlgrey.config.complete"
 echo ">>> Dfam cache populated and symlinked successfully."
