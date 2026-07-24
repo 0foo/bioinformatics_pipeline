@@ -23,8 +23,11 @@ CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.tsv"
 
 CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.json"
 
+CATALOG_FILE="$GENOMES_DIR/catalog/drosophila_melanogaster_available_genomes.json"
+
 echo ">>> Fetching available NCBI genome assembly summary for Drosophila melanogaster..."
-datasets summary genome taxon "Drosophila melanogaster" --format json > "$CATALOG_FILE"
+datasets summary genome taxon "Drosophila melanogaster" > "$CATALOG_FILE"
+
 
 
 echo ">>> Catalog saved to: $CATALOG_FILE"
