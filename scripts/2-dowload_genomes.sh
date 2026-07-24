@@ -1,28 +1,27 @@
 #!/bin/bash
+export PATH="/workspace/bin:$PATH"
 set -e
 
 WORKSPACE_DIR="/workspace"
-DATA_DIR="$WORKSPACE_DIR/data"
-mkdir -p "$DATA_DIR"
+GENOMES_DIR="$WORKSPACE_DIR/genomes"
+mkdir -p "$GENOMES_DIR"
 
 # Define your list of target genomes directly in this array
 GENOME_IDS=(
     "GCF_000001215.4"
-    # Add more accessions here as needed, e.g.:
-    # "GCF_000005165.2"
 )
 
 echo "=========================================="
 echo "    GENOME DOWNLOAD & CATALOG SCRIPT      "
 echo "=========================================="
 
-# 1. Download a complete list of available genomes for Drosophila melanogaster
-CATALOG_DIR="$WORKSPACE_DIR/catalog"
+# 1. Fetch available genomes
+CATALOG_DIR="$GENOMES_DIR/catalog"
 mkdir -p "$CATALOG_DIR"
 CATALOG_FILE="$CATALOG_DIR/drosophila_melanogaster_available_genomes.tsv"
 
 echo ">>> Fetching available NCBI genome assembly summary for Drosophila melanogaster..."
-datasets summary genome taxon "Drosophila melanogaster" --as-json | jq -r '
+datasets summary genome taxon "Drosophila melanogaster" --format json | jq -r '
   ["Accession", "OrganismName", "ReleaseDate", "AssemblyLevel"],
   (.reports[]? | [
     .accession,
@@ -35,11 +34,12 @@ datasets summary genome taxon "Drosophila melanogaster" --as-json | jq -r '
 echo ">>> Catalog saved to: $CATALOG_FILE"
 echo "=========================================="
 
-# 2. Download each target genome defined in the array above
+# 2. Process each target genome defined in the array
 for i in "${!GENOME_IDS[@]}"; do
     GENOME_ID="${GENOME_IDS[$i]}"
-    TARGET_DIR="$DATA_DIR/$GENOME_ID"
+    TARGET_DIR="$GENOMES_DIR/$GENOME_ID"
     GENOME_FILE="$TARGET_DIR/${GENOME_ID}_genomic.fna"
+    ZIP_NAME="$GENOMES_DIR/${GENOME_ID}.zip"
 
     echo ""
     echo "------------------------------------------"
@@ -47,21 +47,33 @@ for i in "${!GENOME_IDS[@]}"; do
     echo "------------------------------------------"
 
     if [ -f "$GENOME_FILE" ]; then
-        echo ">>> Already exists locally: $GENOME_FILE"
-        echo ">>> Skipping download."
+        echo ">>> Target genome file already exists locally: $GENOME_FILE"
+        echo ">>> Skipping download and extraction."
     else
-        echo ">>> Downloading $GENOME_ID via NCBI datasets..."
         mkdir -p "$TARGET_DIR"
-        
-        ZIP_NAME="${GENOME_ID}.zip"
-        datasets download genome accession "$GENOME_ID" --include genome --filename "$ZIP_NAME"
+
+        if [ -f "$ZIP_NAME" ]; then
+            echo ">>> Found existing zip file: $ZIP_NAME. Skipping download."
+        else
+            echo ">>> Downloading $GENOME_ID via NCBI datasets..."
+            datasets download genome accession "$GENOME_ID" --include genome --filename "$ZIP_NAME"
+        fi
         
         echo ">>> Extracting genome files..."
         unzip -o "$ZIP_NAME" -d /tmp/ncbi_dataset
-        cp "/tmp/ncbi_dataset/ncbi_dataset/data/$GENOME_ID/${GENOME_ID}_genomic.fna" "$GENOME_FILE"
         
-        rm -rf "$ZIP_NAME" /tmp/ncbi_dataset
-        echo ">>> Successfully downloaded: $GENOME_FILE"
+        # Dynamically find the extracted .fna file regardless of its specific release suffix
+        EXTRACTED_FNA=$(find /tmp/ncbi_dataset/ncbi_dataset/data/$GENOME_ID -name "*_genomic.fna" | head -n 1)
+        
+        if [ -n "$EXTRACTED_FNA" ]; then
+            cp "$EXTRACTED_FNA" "$GENOME_FILE"
+            echo ">>> Successfully copied to: $GENOME_FILE"
+        else
+            echo "Error: Could not locate extracted genomic .fna file for $GENOME_ID"
+            exit 1
+        fi
+        
+        rm -rf /tmp/ncbi_dataset
     fi
 done
 
