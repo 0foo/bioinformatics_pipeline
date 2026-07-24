@@ -41,6 +41,6 @@ earlGrey -g "$GENOME_FILE" \
      -r "$SEARCH_TERM" \
      -D "/workspace/dfam_cache/FamDB_Data_extracted" \
      -o "$OUT_DIR" \
-     -t 7
+     -t 4
 
 echo ">>> Pipeline completed successfully."
